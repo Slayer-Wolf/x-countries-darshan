@@ -2,7 +2,7 @@ import Card from "./Card.js";
 import { useEffect, useState } from "react";
 import "./App.css";
 export default function App() {
-	const [flag, setFlag] = useState([]);
+	const [getCountries, setGetCountries] = useState([]);
 
 	const fetchFlag = async () => {
 		try {
@@ -21,7 +21,7 @@ export default function App() {
 		const fetchData = async () => {
 			try {
 				const data = await fetchFlag();
-				setFlag(data);
+				setGetCountries(data);
 			} catch (error) {
 				console.error("Error fetching data:", error);
 			}
@@ -33,7 +33,7 @@ export default function App() {
 	return (
 		<>
 			<div className="gridBox">
-				{flag?.map((flagData, index) => (
+				{getCountries?.map((flagData, index) => (
 					<Card key={index} flag={flagData} />
 				))}
 			</div>
