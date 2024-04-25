@@ -1,25 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import Card from "./Card.js";
+import { useEffect, useState } from "react";
+import "./App.css";
+export default function App() {
+	const [flag, setFlag] = useState([]);
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	const fetchFlag = async () => {
+		try {
+			const response = await fetch("https://restcountries.com/v3.1/all");
+			if (!response.ok) {
+				throw new Error("Failed to fetch data");
+			}
+			const data = await response.json();
+			return data;
+		} catch (error) {
+			console.error("Error fetching data:", error);
+		}
+	};
+
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const data = await fetchFlag();
+				setFlag(data);
+			} catch (error) {
+				console.error("Error fetching data:", error);
+			}
+		};
+
+		fetchData();
+	}, []);
+
+	return (
+		<>
+			<div className="gridBox">
+				{flag?.map((flagData, index) => (
+					<Card key={index} flag={flagData} />
+				))}
+			</div>
+		</>
+	);
 }
-
-export default App;
