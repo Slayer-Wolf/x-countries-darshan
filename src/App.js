@@ -3,14 +3,12 @@ import { useEffect, useState } from "react";
 
 export default function App() {
 	const [countries, setCountries] = useState([]);
-	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
 		fetch("https://restcountries.com/v3.1/all")
 			.then((res) => res.json())
 			.then((data) => setCountries(data))
 			.catch((err) => console.error("Error fetching data:", err));
-		setLoading(false);
 	}, []);
 
 	const cardStyle = {
@@ -39,23 +37,17 @@ export default function App() {
 	};
 
 	return (
-		<>
-			{loading ? (
-				<>loading...</>
-			) : (
-				<div style={containerStyle}>
-					{countries.map((country) => (
-						<div key={country.cca3} style={cardStyle}>
-							<img
-								src={country.flags.png}
-								alt={`Flag of ${country.name.common}`}
-								style={imageStyle}
-							/>
-							<h2>{country.name.common}</h2>
-						</div>
-					))}
+		<div style={containerStyle}>
+			{countries.map((country) => (
+				<div key={country.cca3} style={cardStyle}>
+					<img
+						src={country.flags.png}
+						alt={`Flag of ${country.name.common}`}
+						style={imageStyle}
+					/>
+					<h2>{country.name.common}</h2>
 				</div>
-			)}
-		</>
+			))}
+		</div>
 	);
 }
